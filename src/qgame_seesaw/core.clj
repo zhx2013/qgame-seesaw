@@ -1,5 +1,6 @@
 (ns qgame-seesaw.core
-        (:use [seesaw.core]))
+        (:use [seesaw.core])
+	(:gen-class))
 
 (native!)
 (def f (frame :title "QGAME" :width 800 :height 800))
