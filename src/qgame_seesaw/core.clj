@@ -1,8 +1,6 @@
 (ns qgame-seesaw.core
 	(:use [seesaw.core]))
 
-(use 'clojure.repl)
-(use 'seesaw.core)
 (native!)
 (def f (frame :title "QGAME" :width 800 :height 800))
 (defn display [content]
