@@ -30,7 +30,7 @@
 (defn run-prog
 	[]
 	(let [noq (try (Integer/parseInt (text field)) (catch Exception e (alert "number-of-qubits is supposed to be an Integer.")))]
-		(if (< noq 2)
+		(if (< noq 1)
 			(alert "number-of-qubits too small")
 			(text! area2 (str noq (text area))))))
 
