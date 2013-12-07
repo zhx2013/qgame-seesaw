@@ -19,3 +19,7 @@
 (defn show-frame [] (-> f pack! show!) (display-split area area2 b))
 
 (show-frame)
+
+(defn -main
+	[]
+	(show-frame))
