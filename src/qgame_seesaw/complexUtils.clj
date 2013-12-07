@@ -1,7 +1,7 @@
 (ns qgame-seesaw.complexUtils
   (:use [clojure.core.matrix :only [sin cos]]
         [clojure.pprint :only [cl-format]]
-        [qgame.genUtils])
+        [qgame-seesaw.genUtils])
   (:require [clojure.string :as s :only [replace]]))
 
 (def i

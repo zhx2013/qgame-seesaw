@@ -2,10 +2,10 @@
   (:refer-clojure :exclude [* - + == /])
   (:use [clojure.core.matrix]
         [clojure.core.matrix.operators])
-  (:use [qgame.complexUtils]
-        [qgame.genUtils]
-        [qgame.matrixUtils]
-        [qgame.qutils]))
+  (:use [qgame-seesaw.complexUtils]
+        [qgame-seesaw.genUtils]
+        [qgame-seesaw.matrixUtils]
+        [qgame-seesaw.qutils]))
 
 (defn apply-operator
   "For each set of indices (calculated given the qubits to operate on), applies some operator to the amplitudes at those indices."

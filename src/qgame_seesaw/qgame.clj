@@ -2,10 +2,10 @@
   (:refer-clojure :exclude [* - + == /])
   (:use [clojure.core.matrix]
         [clojure.core.matrix.operators])
-  (:use [qgame.genUtils]
-        [qgame.complexUtils]
-        [qgame.qgates]
-        [qgame.qutils]))
+  (:use [qgame-seesaw.genUtils]
+        [qgame-seesaw.complexUtils]
+        [qgame-seesaw.qgates]
+        [qgame-seesaw.qutils]))
 
 (def default-quantum-system
   {:amplitudes [1]

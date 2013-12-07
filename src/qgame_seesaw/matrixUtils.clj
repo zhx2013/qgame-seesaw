@@ -2,8 +2,8 @@
   (:refer-clojure :exclude [* - + == /])
   (:use [clojure.core.matrix]
        [clojure.core.matrix.operators])
-  (:use [qgame.genUtils]
-        [qgame.complexUtils]
+  (:use [qgame-seesaw.genUtils]
+        [qgame-seesaw.complexUtils]
         [clojure.walk :only [postwalk]]))
 
 (defn conjugate-transpose
