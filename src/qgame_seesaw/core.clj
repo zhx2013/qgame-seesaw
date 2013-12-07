@@ -16,7 +16,7 @@
 	(display (top-bottom-split
 		(display (left-right-split (scrollable left) (scrollable right) :divider-location 1/2)) b :divider-location 8/9)))
 (defn show-frame [] (-> f pack! show!) (display-split area area2 b))
-(defn -main [&args]
+(defn -main []
 	(native!)
 	(listen b :action (fn [e] (text! area2 (text area))))
 	(show-frame)
