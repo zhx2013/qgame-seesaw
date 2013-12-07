@@ -1,4 +1,4 @@
-(ns qgame.qutils
+(ns qgame-seesaw.qutils
   (:use [qgame.complexUtils]
         [qgame.genUtils]))
 

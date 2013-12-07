@@ -1,4 +1,4 @@
-(ns qgame.genUtils)
+(ns qgame-seesaw.genUtils)
 
 (defmacro unless
   "If (pred then) returns true, returns else, else returns then."

@@ -1,4 +1,4 @@
-(ns qgame.qgates
+(ns qgame-seesaw.qgates
   (:refer-clojure :exclude [* - + == /])
   (:use [clojure.core.matrix]
         [clojure.core.matrix.operators])
