@@ -18,13 +18,21 @@
 			:listen [:action (fn [e] (alert "About \n Quantum Gate And Measurement Emulator \n 
 			Original author: \n Lee Spector \n
 			Clojure version authors: \n Omri Bernstein \n Evan Ricketts \n Haoxi Zhan \n Breton Handy \n Mitchel Fields"))]))
-(def save-button (button :text "Save"
+(def save-area2 (button :text "Save result"
 			:listen [:action (fn [e] (spit (choose-file :type :save :multi? false) (text area2)))]))
+(def save-area (button :text "Save input"
+			:listen [:action (fn [e] (spit (choose-file :type :save :multi? false) (text area2)))]))
+(def open-area (button :text "Open"
+			:listen [:action (fn [e] (text! area (slurp (choose-file :type :open :multi? false))))]))
 
 (defn display-split []
 	(display (top-bottom-split
 		;top buttons
-		(display (left-right-split save-button about-button :divider-location 1/2))
+		(display (left-right-split open-area 
+			(display (left-right-split save-area 
+				(display (left-right-split save-area2 about-button :divider-location 1/2))
+				:divider-location 1/3))
+			:divider-location 1/4))
 		;lower things
 		(display (top-bottom-split
 			; The two panels of text areas
