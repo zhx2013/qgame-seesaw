@@ -1,13 +1,16 @@
 (ns qgame-seesaw.core
   (:gen-class :main true)
   (:use [seesaw.core]
-	[seesaw.chooser]
-	[qgame.core]
-	[qgame.qgates]
-	[qgame.pprint]))
+        [seesaw.chooser]
+        [qgame.core]
+        [qgame.qgates]
+        [qgame.pprint]))
 
 ;; The whole frame
-(def f (frame :title "QGAME" :width 800 :height 800 :on-close :exit))
+(def f (frame :title "QGAME" 
+              :size [800 :by 800] 
+              :minimum-size [900 :by 900]
+              :on-close :exit))
 
 (defn display [content]
 	"A function to display things on screen"
@@ -16,11 +19,11 @@
 
 ;; The left-panel which is for inputs
 (def area (text :multi-line? true :font "MONOSPACED-PLAIN-14"
-	:text ""))
+	:text "" :preferred-size [300 :by 700]))
 
 ;; The right-panel which is for outputs
 (def area2 (text :multi-line? true :font "MONOSPACED-PLAIN-14"
-	:text (text area) :background :black :foreground :white))
+	:text (text area) :background :black :foreground :white :preferred-size [300 :by 700]))
 
 ;; The "Exit button"
 (def exit-b (button :text "Exit"
@@ -60,7 +63,7 @@
 		:listen [:action (fn [e] (run-prog))]))
 		
 ;; Splitting the whole frame
-(defn display-split []
+(defn display-split [& e]
 	(display (top-bottom-split
 		;top buttons
 		(display (left-right-split open-area 
@@ -85,9 +88,10 @@
 		; the divider-location of top bar and other contents
 		:divider-location 1/20)))
 		
-			
+(listen f :component-resized display-split)
+
 ;; Showing the frames
-(defn show-frame [] (-> f pack! show!) (display-split))
+(defn show-frame [] (display-split (-> f pack! show!) (display-split)))
 
 (defn -main [& args]
 	(native!)
