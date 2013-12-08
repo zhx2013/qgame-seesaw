@@ -1,7 +1,8 @@
 (ns qgame-seesaw.core
   (:gen-class :main true)
   (:use [seesaw.core]
-	[seesaw.chooser]))
+	[seesaw.chooser]
+	[qgame.core]))
 
 ;; The whole frame
 (def f (frame :title "QGAME" :width 800 :height 800 :on-close :exit))
