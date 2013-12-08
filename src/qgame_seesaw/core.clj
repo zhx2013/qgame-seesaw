@@ -2,7 +2,9 @@
   (:gen-class :main true)
   (:use [seesaw.core]
 	[seesaw.chooser]
-	[qgame.core]))
+	[qgame.core]
+	[qgame.qgates]
+	[qgame.pprint]))
 
 ;; The whole frame
 (def f (frame :title "QGAME" :width 800 :height 800 :on-close :exit))
@@ -33,7 +35,7 @@
 	(let [noq (try (Integer/parseInt (text field)) (catch Exception e (alert "number-of-qubits is supposed to be an Integer.")))]
 		(if (< noq 1)
 			(alert "number-of-qubits too small")
-			(text! area2 (str noq (text area))))))
+			(text! area2 (str (pprint-branch (execute-program {:num-qubits noq} (text area))))))))
 
 ;; The "About" button
 (def about-button (button :text "About"
