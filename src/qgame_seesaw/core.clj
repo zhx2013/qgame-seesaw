@@ -91,7 +91,7 @@
 (listen f :component-resized display-split)
 
 ;; Showing the frames
-(defn show-frame [] (display-split (-> f pack! show!) (display-split)))
+(defn show-frame [] (display-split (-> f pack! show!)))
 
 (defn -main [& args]
 	(native!)
