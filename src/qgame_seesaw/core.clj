@@ -49,7 +49,7 @@
 			
 ;; The "Save input" button
 (def save-area (button :text "Save input"
-			:listen [:action (fn [e] (spit (choose-file :type :save :multi? false) (text area2)))]))
+			:listen [:action (fn [e] (spit (choose-file :type :save :multi? false) (text area)))]))
 			
 ;; The "Open" button
 (def open-area (button :text "Open"
