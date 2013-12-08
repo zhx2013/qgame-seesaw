@@ -35,7 +35,7 @@
 	(let [noq (try (Integer/parseInt (text field)) (catch Exception e (alert "number-of-qubits is supposed to be an Integer.")))]
 		(if (< noq 1)
 			(alert "number-of-qubits too small")
-			(text! area2 (str (pprint-branch (execute-program {:num-qubits noq} (text area))))))))
+			(text! area2 (str (execute-program {:num-qubits noq} (read-string (text area))))))))
 
 ;; The "About" button
 (def about-button (button :text "About"
