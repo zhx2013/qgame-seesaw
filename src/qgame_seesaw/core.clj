@@ -30,7 +30,7 @@
         :font "MONOSPACED-PLAIN-14"
         :text (text area)
         :background :black
-	:foreground :white
+        :foreground :white
         :preferred-size [300 :by 700]))
 
 ;; The "Exit button"
