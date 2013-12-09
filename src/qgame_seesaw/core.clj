@@ -10,7 +10,7 @@
   (text :multi-line? true
         :wrap-lines? true
         :font "MONOSPACED-PLAIN-14"
-        :text ""
+        :text "Wanings: \n 1. Outer parentheses are expected. \n 2. Quotation marks are not allowed. \n 3. Please clear this textarea before typing your program."
         :preferred-size [300 :by 700]))
 
 ;; The right-panel which is for outputs
