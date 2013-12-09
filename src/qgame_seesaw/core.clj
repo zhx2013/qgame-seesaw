@@ -5,60 +5,90 @@
         [qgame.api]))
 
 ;; The whole frame
-(def f (frame :title "QGAME" 
-              :size [900 :by 900] 
-              :minimum-size [900 :by 900]
-              :on-close :exit))
+(def f
+  (frame :title "QGAME" 
+         :size [900 :by 900]
+         :minimum-size [900 :by 900]
+         :on-close :exit))
 
-(defn display [content]
-	"A function to display things on screen"
+(defn display
+  "A function to display things on screen"
+  [content]
 	(config! f :content content)
 	content)
 
 ;; The left-panel which is for inputs
-(def area (text :multi-line? true :font "MONOSPACED-PLAIN-14"
-	:text "" :preferred-size [300 :by 700]))
+(def area
+  (text :multi-line? true
+        :font "MONOSPACED-PLAIN-14"
+        :text ""
+        :preferred-size [300 :by 700]))
 
 ;; The right-panel which is for outputs
-(def area2 (text :multi-line? true :font "MONOSPACED-PLAIN-14"
-	:text (text area) :background :black :foreground :white :preferred-size [300 :by 700]))
+(def area2
+  (text :multi-line? true
+        :font "MONOSPACED-PLAIN-14"
+        :text (text area)
+        :background :black :foreground :white
+        :preferred-size [300 :by 700]))
 
 ;; The "Exit button"
-(def exit-b (button :text "Exit"
-			:listen [:action (fn [e] (System/exit 0))]))
+(def exit-b
+  (button :text "Exit"
+          :listen [:action (fn [e] (System/exit 0))]))
 
 ;; The "Number of qubits" inputing field
-(def field (text :multi-line? false :font "MONOSPACED-PLAIN-14" :text""))
+(def field
+  (text :multi-line? false
+        :font "MONOSPACED-PLAIN-14"
+        :text ""))
 
 ;; Running the program
 (defn run-prog
-	[]
-	(let [noq (try (Integer/parseInt (text field)) (catch Exception e (alert "number-of-qubits is supposed to be an Integer.")))]
-		(if (< noq 1)
-			(alert "number-of-qubits too small")
-			(text! area2 (str (execute-program {:num-qubits noq} (read-string (text area))))))))
+  []
+  (let [noq (try (Integer/parseInt (text field))
+              (catch Exception e (alert "number-of-qubits is supposed to be an Integer.")))]
+    (if (< noq 1)
+      (alert "number-of-qubits too small")
+      (->> (text area)
+        read-string
+        (execute-program {:num-qubits noq})
+        str
+        (text! area2)))))
 
 ;; The "About" button
-(def about-button (button :text "About"
-			:listen [:action (fn [e] (alert "About \n Quantum Gate And Measurement Emulator \n 
+(def about-button
+  (button :text "About"
+          :listen [:action (fn [e] (alert "About \n Quantum Gate And Measurement Emulator \n 
 			Original author: \n Lee Spector \n
 			Clojure version authors: \n Omri Bernstein \n Evan Ricketts \n Haoxi Zhan \n Breton Handy \n Mitchel Fields"))]))
 			
 ;; The "Save result" button
-(def save-area2 (button :text "Save result"
-			:listen [:action (fn [e] (spit (choose-file :type :save :multi? false) (text area2)))]))
+(def save-area2
+  (button :text "Save result"
+          :listen [:action (fn [e]
+                             (spit (choose-file :type :save
+                                                :multi? false)
+                                   (text area2)))]))
 			
 ;; The "Save input" button
-(def save-area (button :text "Save input"
-			:listen [:action (fn [e] (spit (choose-file :type :save :multi? false) (text area)))]))
+(def save-area
+  (button :text "Save input"
+          :listen [:action (fn [e]
+                             (spit (choose-file :type :save
+                                                :multi? false)
+                                   (text area)))]))
 			
 ;; The "Open" button
-(def open-area (button :text "Open"
-			:listen [:action (fn [e] (text! area (slurp (choose-file :type :open :multi? false))))]))
+(def open-area
+  (button :text "Open"
+          :listen [:action (fn [e]
+                             (text! area (slurp (choose-file :type :open :multi? false))))]))
 
 ;; The "Run code" button
-(def b (button :text "Run code"
-		:listen [:action (fn [e] (run-prog))]))
+(def b
+  (button :text "Run code"
+          :listen [:action (fn [e] (run-prog))]))
 		
 ;; Splitting the whole frame
 (defn display-split [& e]
@@ -89,9 +119,9 @@
 (listen f :component-resized display-split)
 
 ;; Showing the frames
-(defn show-frame [] (display-split (-> f pack! show!)))
+(defn show-frame []
+  (-> f pack! show! display-split))
 
 (defn -main [& args]
 	(native!)
-	(show-frame)
-)
+	(show-frame))
