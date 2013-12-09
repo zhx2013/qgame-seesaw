@@ -20,6 +20,7 @@
 ;; The left-panel which is for inputs
 (def area
   (text :multi-line? true
+        :wrap-lines? true
         :font "MONOSPACED-PLAIN-14"
         :text ""
         :preferred-size [300 :by 700]))
@@ -27,6 +28,7 @@
 ;; The right-panel which is for outputs
 (def area2
   (text :multi-line? true
+        :wrap-lines? true
         :font "MONOSPACED-PLAIN-14"
         :text (text area)
         :background :black
