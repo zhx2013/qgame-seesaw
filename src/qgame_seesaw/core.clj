@@ -2,22 +2,10 @@
   (:gen-class :main true)
   (:use [seesaw.core]
         [seesaw.chooser]
+        [seesaw.color]
+        [seesaw.border]
         [qgame.api]))
 
-;; The whole frame
-(def f
-  (frame :title "QGAME" 
-         :size [900 :by 720]
-         :minimum-size [900 :by 720]
-         :on-close :exit))
-
-(defn display
-  "A function to display things on screen"
-  [content]
-	(config! f :content content)
-	content)
-
-;; The left-panel which is for inputs
 (def area
   (text :multi-line? true
         :wrap-lines? true
@@ -29,38 +17,23 @@
 (def area2
   (text :multi-line? true
         :wrap-lines? true
+        :id :area2
+        :text ""
         :font "MONOSPACED-PLAIN-14"
-        :text (text area)
+        :editable? false
         :background :black
         :foreground :white
         :preferred-size [300 :by 700]))
 
-;; The "Exit button"
-(def exit-b
-  (button :text "Exit"
-          :listen [:action (fn [e] (System/exit 0))]))
 
-;; The "Number of qubits" inputing field
-(def field
-  (text :multi-line? false
-        :font "MONOSPACED-PLAIN-14"
-        :text ""))
+(def text-combo
+  (grid-panel
+    :border 10
+    :items [area area2]
+    :columns 2
+    :hgap 15))
 
-;; Running the program
-(defn run-prog
-  []
-  (let [noq (try (Integer/parseInt (text field))
-              (catch Exception e (alert "number-of-qubits is supposed to be an Integer.")))]
-    (if (< noq 1)
-      (alert "number-of-qubits too small")
-      (->> (text area)
-        read-string
-        (execute-program {:num-qubits noq})
-        list*
-        str
-        (text! area2)))))
 
-;; The "About" button
 (def about-button
   (button :text "About"
           :listen [:action (fn [e] (alert "About \n Quantum Gate And Measurement Emulator \n 
@@ -74,6 +47,18 @@
                              (spit (choose-file :type :save
                                                 :multi? false)
                                    (text area2)))]))
+
+
+(def clear-result
+  (button :text "Clear result"
+          :listen [:action (fn [e]
+                             (text! area2 "Results"))]))
+
+
+(def clear-entry
+  (button :text "Clear input"
+          :listen [:action (fn [e]
+                             (text! area ""))]))
 
 ;; The "Save input" button
 (def save-area
@@ -89,47 +74,76 @@
           :listen [:action (fn [e]
                              (text! area (slurp (choose-file :type :open :multi? false))))]))
 
-;; The "Run code" button
+
+(def top-bt-combo
+  (grid-panel
+    :items [open-area save-area clear-entry save-area2 clear-result about-button]
+    :columns 6
+    :rows 1
+    :vgap 13
+    :hgap 45))
+
+
+(def field
+  (text :multi-line? false
+        :font "MONOSPACED-PLAIN-14"
+        :columns 80
+        :text ""))
+
+
+(def qbt-combo
+  (flow-panel
+    :items [(label :text "Number of qubits: "
+                   :font "MONOSPACED-PLAIN-14")
+            field]
+    :align :left
+    :hgap 30))
+
+
+(defn run-prog
+  []
+  (use 'qgame.api)
+  (let [noq (try (Integer/parseInt (text field))
+              (catch Exception e (alert "number-of-qubits is supposed to be an Integer.")))]
+    (if (< noq 1)
+      (alert "number-of-qubits too small")
+      (->> (text area)
+        read-string
+        (execute-program {:num-qubits noq})
+        list*
+        str
+        (text! area2)))))
+        
+        
+
+
 (def b
   (button :text "Run code"
           :listen [:action (fn [e] (run-prog))]))
 
-;; Splitting the whole frame
-(defn display-split
-  [& e]
-  (use 'qgame.api)
-	(display (top-bottom-split
-		;top buttons
-		(display (left-right-split open-area 
-			(display (left-right-split save-area 
-				(display (left-right-split save-area2 about-button :divider-location 1/2))
-				:divider-location 1/3))
-			:divider-location 1/4))
-		;lower things
-		(display (top-bottom-split
-			; The two panels of text areas
-			(display (left-right-split (scrollable area) (scrollable area2) :divider-location 1/2))
-			; The bottom commands (number-of-qubits and run/exit)
-			(display (top-bottom-split
-				;number-of-qubits
-				(display (left-right-split "Number of qubits: " field))
-				; run and exit buttons
-				(display (left-right-split b exit-b :divider-location 1/2))
-				; the divider-location of this bottom commands subframe (num-qubits and buttons)
-				:divider-location 1/2))
-			; the divider-location of the subframe except the top bar
-			:divider-location 8/9))
-		; the divider-location of top bar and other contents
-		:divider-location 1/20)))
+(def exit-b
+  (button :text "Exit"
+          :listen [:action (fn [e] (System/exit 0))]))
 
-(listen f :component-resized display-split)
 
-;; Showing the frames
-(defn show-frame
-  []
-  (->> f pack! show! display-split))
+(def run-exit-combo
+  (flow-panel
+    :items [b exit-b]
+    :align :left
+    :hgap 265))
 
-(defn -main
-  [& args]
+
+(def contents
+  (vertical-panel
+    :items [top-bt-combo text-combo qbt-combo run-exit-combo]))
+
+(def f
+  (frame :title "QGAME" 
+         :minimum-size [900 :by 720]
+         :content contents
+         :on-close :exit))
+
+
+(defn -main [& args]
   (native!)
-  (show-frame))
+  (-> f pack! show!))
