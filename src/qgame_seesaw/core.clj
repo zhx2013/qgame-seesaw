@@ -7,8 +7,8 @@
 ;; The whole frame
 (def f
   (frame :title "QGAME" 
-         :size [900 :by 900]
-         :minimum-size [900 :by 900]
+         :size [900 :by 720]
+         :minimum-size [900 :by 720]
          :on-close :exit))
 
 (defn display
