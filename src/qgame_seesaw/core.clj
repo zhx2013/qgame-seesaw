@@ -54,6 +54,7 @@
       (->> (text area)
         read-string
         (execute-program {:num-qubits noq})
+        list*
         str
         (text! area2)))))
 
@@ -63,7 +64,7 @@
           :listen [:action (fn [e] (alert "About \n Quantum Gate And Measurement Emulator \n 
 			Original author: \n Lee Spector \n
 			Clojure version authors: \n Omri Bernstein \n Evan Ricketts \n Haoxi Zhan \n Breton Handy \n Mitchel Fields"))]))
-			
+
 ;; The "Save result" button
 (def save-area2
   (button :text "Save result"
@@ -71,7 +72,7 @@
                              (spit (choose-file :type :save
                                                 :multi? false)
                                    (text area2)))]))
-			
+
 ;; The "Save input" button
 (def save-area
   (button :text "Save input"
@@ -79,7 +80,7 @@
                              (spit (choose-file :type :save
                                                 :multi? false)
                                    (text area)))]))
-			
+
 ;; The "Open" button
 (def open-area
   (button :text "Open"
@@ -90,9 +91,11 @@
 (def b
   (button :text "Run code"
           :listen [:action (fn [e] (run-prog))]))
-		
+
 ;; Splitting the whole frame
-(defn display-split [& e]
+(defn display-split
+  [& e]
+  (use 'qgame.api)
 	(display (top-bottom-split
 		;top buttons
 		(display (left-right-split open-area 
@@ -116,13 +119,15 @@
 			:divider-location 8/9))
 		; the divider-location of top bar and other contents
 		:divider-location 1/20)))
-		
+
 (listen f :component-resized display-split)
 
 ;; Showing the frames
-(defn show-frame []
-  (-> f pack! show! display-split))
+(defn show-frame
+  []
+  (->> f pack! show! display-split))
 
-(defn -main [& args]
-	(native!)
-	(show-frame))
+(defn -main
+  [& args]
+  (native!)
+  (show-frame))
