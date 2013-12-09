@@ -107,12 +107,14 @@
               (catch Exception e (alert "number-of-qubits is supposed to be an Integer.")))]
     (if (< noq 1)
       (alert "number-of-qubits too small")
-      (->> (text area)
-        read-string
-        (execute-program {:num-qubits noq})
-        list*
-        str
-        (text! area2)))))
+      (let [read-string (read-string (text area))]
+        (if (not (coll? (first read-string)))
+          (alert "Your input seems to be invalid...")
+          (->> read-string
+               (execute-program {:num-qubits noq})
+               list*
+               str
+               (text! area2)))))))
         
         
 
