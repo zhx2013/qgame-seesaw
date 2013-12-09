@@ -2,9 +2,7 @@
   (:gen-class :main true)
   (:use [seesaw.core]
         [seesaw.chooser]
-        [qgame.core]
-        [qgame.qgates]
-        [qgame.pprint]))
+        [qgame.api]))
 
 ;; The whole frame
 (def f (frame :title "QGAME" 
