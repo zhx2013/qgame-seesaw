@@ -87,7 +87,7 @@
 (def field
   (text :multi-line? false
         :font "MONOSPACED-PLAIN-14"
-        :columns 80
+        :columns 10
         :text ""))
 
 
