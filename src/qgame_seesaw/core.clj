@@ -63,10 +63,16 @@
              :listen [:action (fn [e]
                                 (text! (select text-area [:#area]) (slurp (choose-file :type :open :multi? false))))]))
 
+(defn quit-egg
+	[]
+	(let [x (rand-int 50)]
+		(if (< x 10)
+			(alert "You are caught by Charles' quantum crab. \nThus you are not allowed to exit.")
+			(System/exit 0))))
 
 (def quit-bar 
   (menu-item :text "Quit"
-             :listen [:action (fn [e] (System/exit 0))]))
+             :listen [:action (fn [e] (quit-egg))]))
 
 (def bar
   (menubar 
