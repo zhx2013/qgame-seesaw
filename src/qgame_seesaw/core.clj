@@ -4,7 +4,7 @@
         [seesaw.chooser]
         [seesaw.color]
         [seesaw.border]
-	[qgame.api])
+        	[qgame.api])
   (:require [clojure.java.browse]))
 
 
@@ -29,23 +29,56 @@
                                      :preferred-size [300 :by 700]))]))
 
 
-(def about-button
-  (button :text "About"
-          :listen [:action (fn [e] (alert "About \n Quantum Gate And Measurement Emulator \n Version: RC5 
-			Original author: \n Lee Spector \n
-			Clojure version authors: \n Omri Bernstein \n Evan Ricketts \n Haoxi Zhan \n Breton Handy \n Mitchel Fields"))]))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    file menu      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(def about-bar
+  (menu-item :text "About"
+             :listen [:action (fn [e] (alert "About \n Quantum Gate And Measurement Emulator \n Version: RC5 
+                                              Original author: \n Lee Spector \n
+                                              Clojure version authors: \n Omri Bernstein \n Evan Ricketts \n Haoxi Zhan \n Breton Handy \n Mitchel Fields"))]))
 
+(def help-bar
+	(menu-item :text "Help"
+            		:listen [:action (fn [e]
+                                 (clojure.java.browse/browse-url "http://gibson.hampshire.edu/~qgame/"))]))
 
-(def save-output
-  (button :text "Save result"
+(def save-input-bar
+  (menu-item :text "Save input"
+          :listen [:action (fn [e]
+                             (spit (choose-file :type :save
+                                                :multi? false)
+                                   (text (select text-area [:#area]))))]))
+
+(def save-output-bar
+  (menu-item :text "Save results"
           :listen [:action (fn [e]
                              (spit (choose-file :type :save
                                                 :multi? false)
                                    (text (select text-area [:#area2]))))]))
 
+(def open-bar
+  (menu-item :text "Open"
+             :listen [:action (fn [e]
+                                (text! (select text-area [:#area]) (slurp (choose-file :type :open :multi? false))))]))
 
+
+(def bar
+  (menubar 
+    :items [(menu
+              :text "File"
+              :items [open-bar
+                      save-input-bar
+                      save-output-bar
+                      about-bar 
+                      help-bar])]))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    clear buttons      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (def clear-output
-  (button :text "Clear result"
+  (button :text "Clear results"
           :listen [:action (fn [e]
                              (text! (select text-area [:#area2]) "Results"))]))
 
@@ -55,41 +88,19 @@
           :listen [:action (fn [e]
                              (text! (select text-area [:#area]) ""))]))
 
-
-(def save-input-button
-  (button :text "Save input"
-          :listen [:action (fn [e]
-                             (spit (choose-file :type :save
-                                                :multi? false)
-                                   (text (select text-area [:#area]))))]))
-
-
-(def open-button
-  (button :text "Open"
-          :listen [:action (fn [e]
-                             (text! (select text-area [:#area]) (slurp (choose-file :type :open :multi? false))))]))
-
-(def help-button
-	(button :text "Help"
-		:listen [:action (fn [e]
-				   (clojure.java.browse/browse-url "http://gibson.hampshire.edu/~qgame/"))]))
-
-
 (def top-buttons
   (grid-panel
     :columns 6
     :rows 1
     :vgap 13
     :hgap 45
-    :items [open-button 
-            save-input-button 
-            clear-input 
-            save-output 
-            clear-output 
-	    help-button
-            about-button]))
+    :items [clear-input  
+            clear-output])) 
+         
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    qubit input      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (def qubit-input
   (flow-panel
     :align :left
@@ -102,7 +113,9 @@
                   :columns 10
                   :text "")]))
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    program runner      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defn run-prog
   []
   (use 'qgame.api)
@@ -116,11 +129,16 @@
           (let [to (select text-area [:#area2])
                 update (->> read-string
                             (execute-program {:num-qubits noq})
-                            list*)
+                            list*
+                            all-to-floats
+                            (map all-to-cstrings))
                 original (text to)]
-            (text! to (str original "\n\n" update))))))))
+            (text! to (str original "\n\n" (list* update)))))))))
                 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;    put everything together      ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (def run-exit-buttons
   (flow-panel
     :align :left
@@ -139,6 +157,7 @@
   (frame :title "QGAME RC5" 
          :minimum-size [900 :by 720]
          :content contents
+         :menubar bar
          :on-close :exit))
 
 
