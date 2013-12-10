@@ -107,11 +107,9 @@
         (if (not (coll? (first read-string)))
           (alert "Your input seems to be invalid... \n\nInput Guidelines: \n 1. Outer parentheses are expected. \n 2. Quotation marks are not allowed.")
           (let [to (select text-area [:#area2])
-                update (try (->> read-string
-                                 (execute-program {:num-qubits noq})
-                                 list*)
-                            (catch Exception e  (alert "Your input seems to be invalid... \n\nInput Guidelines: \n 1. Outer parentheses are expected. \n 2. Quotation marks are not allowed.")))
-                            
+                update (->> read-string
+                            (execute-program {:num-qubits noq})
+                            list*)
                 original (text to)]
             (text! to (str original "\n\n" update))))))))
                 
