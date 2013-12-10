@@ -65,7 +65,7 @@
 
 (defn quit-egg
 	[]
-	(let [x (rand-int 50)]
+	(let [x (rand-int 20)]
 		(if (< x 10)
 			(alert "You are caught by quantum crabs. \nThus you are not allowed to exit.")
 			(System/exit 0))))
