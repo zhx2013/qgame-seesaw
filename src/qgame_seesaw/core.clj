@@ -35,7 +35,7 @@
 (def about-bar
   (menu-item :text "About"
              :listen [:action (fn [e] (alert 
-                                        (str "About \n Quantum Gate And Measurement Emulator \n Version: RC5\n\n" 
+                                        (str "About \n Quantum Gate And Measurement Emulator \n Version: RC6\n\n" 
                                               "Original author: \n Lee Spector \n\n"
                                               "Clojure version authors: \n Omri Bernstein \n Evan Ricketts \n Haoxi Zhan \n Breton Handy \n Mitchel Fields")))]))
 
@@ -161,7 +161,7 @@
     :items [top-buttons text-area qubit-input]))
 
 (def f
-  (frame :title "QGAME RC5" 
+  (frame :title "QGAME RC6" 
          :minimum-size [900 :by 720]
          :content contents
          :menubar bar
