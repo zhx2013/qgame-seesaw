@@ -30,7 +30,7 @@
 
 (def about-button
   (button :text "About"
-          :listen [:action (fn [e] (alert "About \n Quantum Gate And Measurement Emulator \n 
+          :listen [:action (fn [e] (alert "About \n Quantum Gate And Measurement Emulator \n Version: RC4 
 			Original author: \n Lee Spector \n
 			Clojure version authors: \n Omri Bernstein \n Evan Ricketts \n Haoxi Zhan \n Breton Handy \n Mitchel Fields"))]))
 
@@ -129,7 +129,7 @@
     :items [top-buttons text-area qubit-input run-exit-buttons]))
 
 (def f
-  (frame :title "QGAME" 
+  (frame :title "QGAME RC4" 
          :minimum-size [900 :by 720]
          :content contents
          :on-close :exit))

@@ -2,6 +2,5 @@
 QGAME-seesaw
 ==========
 
-Main contributor: frode and mitchel
+Features:
 
-Now have exit function
