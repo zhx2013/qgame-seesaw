@@ -4,7 +4,8 @@
         [seesaw.chooser]
         [seesaw.color]
         [seesaw.border]
-        [qgame.api]))
+	[qgame.api])
+  (:require [clojure.java.browse]))
 
 
 (def text-area
@@ -68,6 +69,11 @@
           :listen [:action (fn [e]
                              (text! (select text-area [:#area]) (slurp (choose-file :type :open :multi? false))))]))
 
+(def help-button
+	(button :text "Help"
+		:listen [:action (fn [e]
+				   (clojure.java.browse/browse-url "http://gibson.hampshire.edu/~qgame/"))]))
+
 
 (def top-buttons
   (grid-panel
@@ -80,6 +86,7 @@
             clear-input 
             save-output 
             clear-output 
+	    help-button
             about-button]))
 
 
