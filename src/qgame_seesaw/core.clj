@@ -64,6 +64,10 @@
                                 (text! (select text-area [:#area]) (slurp (choose-file :type :open :multi? false))))]))
 
 
+(def quit-bar 
+  (menu-item :text "Quit"
+             :listen [:action (fn [e] (System/exit 0))]))
+
 (def bar
   (menubar 
     :items [(menu
@@ -72,7 +76,8 @@
                       save-input-bar
                       save-output-bar
                       about-bar 
-                      help-bar])]))
+                      help-bar
+                      quit-bar])]))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -97,10 +102,12 @@
     :hgap 45
     :items [clear-input  
             clear-output])) 
-         
+
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    qubit input      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    qubit input/run      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (def qubit-input
   (flow-panel
@@ -109,10 +116,16 @@
     :items [(label :text "Number of qubits: "
                    :font "MONOSPACED-PLAIN-14")
             (text :multi-line? false
-                  :id :field
                   :font "MONOSPACED-PLAIN-14"
+                  :id :field
                   :columns 10
-                  :text "")]))
+                  :text "")
+            (flow-panel
+              :align :left
+              :items [(button :text "Run code"
+                              :id :run-code)])]))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    program runner      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -135,24 +148,17 @@
                             (map all-to-cstrings))
                 original (text to)]
             (text! to (str original "\n\n" (list* update)))))))))
-                
+
+(listen (select qubit-input [:#run-code]) :action (fn [e] (run-prog)))          
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;    put everything together      ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(def run-exit-buttons
-  (flow-panel
-    :align :left
-    :hgap 265
-    :items [(button :text "Run code"
-                    :listen [:action (fn [e] (run-prog))]) 
-            (button :text "Exit"
-                    :listen [:action (fn [e] (System/exit 0))])]))
 
 
 (def contents
   (vertical-panel
-    :items [top-buttons text-area qubit-input run-exit-buttons]))
+    :items [top-buttons text-area qubit-input]))
 
 (def f
   (frame :title "QGAME RC6" 
