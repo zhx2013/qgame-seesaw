@@ -13,12 +13,12 @@
     :border 10
     :columns 2
     :hgap 15
-    :items [(text :multi-line? true
+    :items [(scrollable (styled-text
                   :wrap-lines? true
                   :id :area
                   :font "MONOSPACED-PLAIN-14"
                   :text "Warnings: \n 1. Outer parentheses are expected. \n 2. Quotation marks are not allowed. \n 3. Please clear this text area before typing your program."
-                  :preferred-size [300 :by 700]) 
+                  :preferred-size [300 :by 700])) 
             (scrollable (styled-text :wrap-lines? true
                                      :id :area2
                                      :text "Results"
