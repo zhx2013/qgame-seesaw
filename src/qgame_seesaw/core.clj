@@ -34,9 +34,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (def about-bar
   (menu-item :text "About"
-             :listen [:action (fn [e] (alert "About \n Quantum Gate And Measurement Emulator \n Version: RC5 
-                                              Original author: \n Lee Spector \n
-                                              Clojure version authors: \n Omri Bernstein \n Evan Ricketts \n Haoxi Zhan \n Breton Handy \n Mitchel Fields"))]))
+             :listen [:action (fn [e] (alert 
+                                        (str "About \n Quantum Gate And Measurement Emulator \n Version: RC5\n\n" 
+                                              "Original author: \n Lee Spector \n\n"
+                                              "Clojure version authors: \n Omri Bernstein \n Evan Ricketts \n Haoxi Zhan \n Breton Handy \n Mitchel Fields")))]))
 
 (def help-bar
 	(menu-item :text "Help"
