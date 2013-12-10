@@ -103,7 +103,8 @@
                  (catch Exception e (alert "number-of-qubits is supposed to be an Integer.")))]
     (if (< noq 1)
       (alert "number-of-qubits too small")
-      (let [read-string (read-string (text (select text-area [:#area])))]
+      (let [read-string (try (read-string (text (select text-area [:#area])))
+                             (catch Exception e))]
         (if (not (coll? (first read-string)))
           (alert "Your input seems to be invalid... \n\nInput Guidelines: \n 1. Outer parentheses are expected. \n 2. Quotation marks are not allowed.")
           (let [to (select text-area [:#area2])
@@ -111,7 +112,7 @@
                                  (execute-program {:num-qubits noq})
                                  list*)
                             (catch Exception e  (alert "Your input seems to be invalid... \n\nInput Guidelines: \n 1. Outer parentheses are expected. \n 2. Quotation marks are not allowed.")))
-                            
+                
                 original (text to)]
             (text! to (str original "\n\n" update))))))))
                 
