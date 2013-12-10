@@ -67,7 +67,7 @@
 	[]
 	(let [x (rand-int 50)]
 		(if (< x 10)
-			(alert "You are caught by Charles' quantum crab. \nThus you are not allowed to exit.")
+			(alert "You are caught by quantum crabs. \nThus you are not allowed to exit.")
 			(System/exit 0))))
 
 (def quit-bar 
