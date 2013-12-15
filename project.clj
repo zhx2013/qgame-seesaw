@@ -1,4 +1,4 @@
-(defproject qgame-seesaw "RC6"
+(defproject qgame-seesaw "Schrödinbug"
   :description "FIXME: write description"
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [seesaw "1.4.4"]
